@@ -23,38 +23,36 @@
     <script>
         $(function() {
 
-            // $.ajax({
-            //     url: "/",
-            //     success: function(msg) {
-            //         var str = '<ul>';
-            //         if (msg.code == 0) {
-            //             for (var i = 0; i < msg.data.length; i++) {
-            //                 str += `<li index="${msg.data[i].id}">${msg.data[i].title}</li>`;
-            //             }
-
-            //         }
-            //         str = "</ul>";
-            //         $('.content').append($(str));
-            //     }
-            // });
-
             $(".content").on("click", "li", function() {
+                var defer = $.Deferred();
                 var index = $(this).attr("index");
-                var hits = $(this).find("b").text() * 1;
-                hits++;
+                var hits;
+
                 $.ajax({
-                    url: "/hits",
-                    type: "post",
-                    data: {
-                        id: index,
-                        hits: hits
-                    },
+                    url: "/data",
                     success: function(data) {
                         if (data.code == 0) {
-                            var num = data.data.hits;
+                            for (var i = 0; i < data.data.length; i++) {
+                                if (data.data[i].id == index) {
+                                    hits = data.data[i].hits * 1;
+                                    hits++;
+                                    $.ajax({
+                                        url: "/hits",
+                                        type: "post",
+                                        data: {
+                                            id: index,
+                                            hits: hits
+                                        },
+                                        success: function(msg) {
+                                            if (msg.code == 0) {}
+                                        }
+                                    });
+                                }
+                            }
                         }
                     }
-                })
+                });
+
                 $.ajax({
                     url: "/content?id=" + index,
                     success: function(data) {
@@ -66,6 +64,9 @@
                 location.href = '/add';
             });
 
+            function onClick(data) {
+
+            }
         });
     </script>
 </body>
