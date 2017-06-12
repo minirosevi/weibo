@@ -13,6 +13,7 @@
             <% for(var i in data){ %>
                 <li index="<%=data[i].id%>">
                     <%=data[i].title%>
+                        <span>点击量 ：<b><%=data[i].hits%></b></span>
                 </li>
                 <% } %>
         </ul>
@@ -21,8 +22,39 @@
     <script src="/jquery-1.7.1.js"></script>
     <script>
         $(function() {
+
+            // $.ajax({
+            //     url: "/",
+            //     success: function(msg) {
+            //         var str = '<ul>';
+            //         if (msg.code == 0) {
+            //             for (var i = 0; i < msg.data.length; i++) {
+            //                 str += `<li index="${msg.data[i].id}">${msg.data[i].title}</li>`;
+            //             }
+
+            //         }
+            //         str = "</ul>";
+            //         $('.content').append($(str));
+            //     }
+            // });
+
             $(".content").on("click", "li", function() {
                 var index = $(this).attr("index");
+                var hits = $(this).find("b").text() * 1;
+                hits++;
+                $.ajax({
+                    url: "/hits",
+                    type: "post",
+                    data: {
+                        id: index,
+                        hits: hits
+                    },
+                    success: function(data) {
+                        if (data.code == 0) {
+                            var num = data.data.hits;
+                        }
+                    }
+                })
                 $.ajax({
                     url: "/content?id=" + index,
                     success: function(data) {
@@ -33,6 +65,7 @@
             $(".btn").on("click", function() {
                 location.href = '/add';
             });
+
         });
     </script>
 </body>

@@ -10,8 +10,6 @@ router.post('/adddata', function(req, res) {
         } else {
             res.send({ code: 0, data: "添加成功" });
         }
-
-
     });
 });
 

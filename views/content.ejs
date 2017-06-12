@@ -9,9 +9,19 @@
 </head>
 
 <body>
+    <button type="button">返回</button>
     <p>
         <%=data%>
     </p>
+    <script src="/jquery-1.7.1.js"></script>
+    <script>
+        $(function() {
+            $('button').on("click", function() {
+                window.location.reload();
+                location.href = "/";
+            });
+        });
+    </script>
 </body>
 
 </html>
