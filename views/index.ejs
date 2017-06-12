@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="content">
+        <ul>
+            <% for(var i in data){ %>
+                <li index="<%=data[i].id%>">
+                    <%=data[i].title%>
+                </li>
+                <% } %>
+        </ul>
+        <button class="btn">添加</button>
+    </div>
+    <script src="/jquery-1.7.1.js"></script>
+    <script>
+        $(function() {
+            $(".content").on("click", "li", function() {
+                var index = $(this).attr("index");
+                $.ajax({
+                    url: "/content?id=" + index,
+                    success: function(data) {
+                        location.href = '/content?id=' + index;
+                    }
+                })
+            });
+            $(".btn").on("click", function() {
+                location.href = '/add';
+            });
+        });
+    </script>
+</body>
+
+</html>
